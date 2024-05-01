@@ -6,6 +6,9 @@
 
 #include "../ensemble/ensemble.h"
 
+#define MAX_ALPHABET 256
+#define MAX_TRANSITIONS 100
+
 typedef struct
 {
     Etat depart;
@@ -15,16 +18,32 @@ typedef struct
 
 typedef struct
 {
-    Transition transitions[MAX_ELEMENTS];
+    Transition transitions[MAX_TRANSITIONS];
+    int taille_transitions;
 
     Ensemble etats_initiaux;
     Ensemble etats_finaux;
     Ensemble etats;
+    Ensemble alphabets;
 } AFN;
+
+typedef struct
+{
+    Ensemble etat;
+    Ensemble ensembles[MAX_ALPHABET];
+} Row;
+
+typedef struct
+{
+    Row rows[MAX_TRANSITIONS];
+    int taille;
+} TableTransition;
 
 AFN creer_afn();
 
 void definir_etats(AFN *afn, Etat *etats, int taille);
+
+void definir_alphabets(AFN *afn, char *alphabets, int taille);
 
 void ajouter_etat_final(AFN *afn, Etat etat);
 

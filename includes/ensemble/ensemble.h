@@ -4,21 +4,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_ELEMENTS 100
-
 typedef int Etat;
 
 typedef struct
 {
     int taille;
-    Etat elements[MAX_ELEMENTS];
+    Etat *elements;
 } Ensemble;
 
 Ensemble creer_ensemble_vide();
 
-Ensemble cree_ensemble_singleton(Etat element);
+Ensemble creer_ensemble_singleton(Etat element);
 
-Ensemble cree_ensemble(Etat *elements, int taille);
+Ensemble creer_ensemble(Etat *elements, int taille);
+
+int cardinalite(Ensemble ensemble);
+
+int est_vide(Ensemble ensemble);
+
+int est_egal(Ensemble ensemble1, Ensemble ensemble2);
+
+Ensemble intersection_non_vide(Ensemble ensemble1, Ensemble ensemble2);
 
 Ensemble union_ensemble(Ensemble ensemble1, Ensemble ensemble2);
 
