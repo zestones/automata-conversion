@@ -2,6 +2,7 @@
     "files.associations": {
         "*.rmd": "markdown",
         "ensemble.h": "c",
-        "afn.h": "c"
+        "afn.h": "c",
+        "stdlib.h": "c"
     }
 }

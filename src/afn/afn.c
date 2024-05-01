@@ -102,7 +102,9 @@ int est_mot_accepte(AFN afn, char *mot)
 
 static void afficher_transition(AFN afn)
 {
-    printf("Transitions:\n");
+    fprintf(stdout, "\n==============================\n");
+    fprintf(stdout, "          Transitions         \n");
+    fprintf(stdout, "==============================\n");
     printf("+--------+---------+---------+\n");
     printf("| Depart | Symbole | Arrivee |\n");
     printf("+--------+---------+---------+\n");
@@ -120,12 +122,12 @@ static void afficher_transition(AFN afn)
 
 void afficher_afn(AFN afn)
 {
-    printf("\nEtats initiaux: ");
+    printf("\nEtats initiaux : ");
     afficher_ensemble(afn.etats_initiaux);
 
-    printf("\nEtats finaux: ");
+    printf("\nEtats finaux   : ");
     afficher_ensemble(afn.etats_finaux);
 
-    printf("\n\n");
+    printf("\n");
     afficher_transition(afn);
 }

@@ -1,55 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../includes/test/test.h"
 #include "../includes/afn/afn.h"
 #include "../includes/afd/afd.h"
 
 int main()
 {
-    AFN afn = creer_afn();
-
-    Etat etats[] = {1, 2, 3};
-    definir_etats(&afn, etats, 3);
-
-    char *alphabets = "ab";
-    definir_alphabets(&afn, alphabets, 2);
-
-    ajouter_etat_initial(&afn, 1);
-    ajouter_etat_final(&afn, 3);
-
-    ajouter_transition(&afn, 1, 'a', 1);
-    ajouter_transition(&afn, 1, 'b', 1);
-    ajouter_transition(&afn, 1, 'a', 2);
-    ajouter_transition(&afn, 2, 'b', 3);
-
-    afficher_afn(afn);
-    AFD afd = determiniser(afn);
-    afficher_table_transition(afd.table, afn.alphabets);
+    AFN automate_simple_a = creer_automate_simple_a();
+    afficher_afn(automate_simple_a);
+    AFD afd = determiniser(automate_simple_a);
+    afficher_table_transition(afd.table, automate_simple_a.alphabets);
     afficher_afn(afd.afd);
 
-    int est_accepte = est_mot_accepte(afd.afd, "aaa");
-    printf("Mot accepte: %c\n", (est_accepte) ? 'O' : 'N');
-
-    // AFN afn = creer_afn();
-
-    // Etat etats[] = {1, 2, 3};
-    // definir_etats(&afn, etats, 3);
-
-    // char *alphabets = "ab";
-    // definir_alphabets(&afn, alphabets, 2);
-
-    // ajouter_etat_initial(&afn, 1);
-    // ajouter_etat_final(&afn, 2);
-
-    // ajouter_transition(&afn, 1, 'a', 2);
-    // ajouter_transition(&afn, 1, 'b', 2);
-
-    // ajouter_transition(&afn, 2, 'a', 3);
-
-    // ajouter_transition(&afn, 3, 'b', 2);
-    // ajouter_transition(&afn, 3, 'b', 1);
-    // ajouter_transition(&afn, 3, 'a', 1);
-
-    // afficher_afn(afn);
-    // AFN afd = determiniser(afn);
+    char *mot = "aaa";
+    int est_accepte = est_mot_accepte(afd.afd, mot);
+    fprintf(stdout, "> Le mot \"%s\" est %s : \n", mot, est_accepte ? "accepte" : "non accepte");
 }
