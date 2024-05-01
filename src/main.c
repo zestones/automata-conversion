@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "../includes/afn/afn.h"
+#include "../includes/afd/afd.h"
 
 int main()
 {
@@ -22,7 +23,9 @@ int main()
     ajouter_transition(&afn, 2, 'b', 3);
 
     afficher_afn(afn);
-    AFN afd = determiniser(afn);
+    AFD afd = determiniser(afn);
+    afficher_table_transition(afd.table, afn.alphabets);
+    afficher_afn(afd.afd);
 
     // AFN afn = creer_afn();
 

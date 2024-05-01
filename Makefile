@@ -18,8 +18,8 @@ CLIBS = -lm
 
 all: build simple-clean
 
-build: main.o ensemble.o afn.o
-	$(CC) main.o ensemble.o afn.o -o main $(CLIBS)
+build: main.o ensemble.o afn.o afd.o
+	$(CC) main.o ensemble.o afn.o afd.o -o main $(CLIBS)
 
 main.o: ./src/main.c
 	$(CC) $(CFLAGS) -c ./src/main.c
@@ -29,6 +29,9 @@ ensemble.o: ./src/ensemble/ensemble.c
 
 afn.o: ./src/afn/afn.c
 	$(CC) $(CFLAGS) -c ./src/afn/afn.c
+
+afd.o: ./src/afd/afd.c
+	$(CC) $(CFLAGS) -c ./src/afd/afd.c
 
 simple-clean:
 	rm -f *.o

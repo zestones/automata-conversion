@@ -27,18 +27,6 @@ typedef struct
     Ensemble alphabets;
 } AFN;
 
-typedef struct
-{
-    Ensemble etat;
-    Ensemble ensembles[MAX_ALPHABET];
-} Row;
-
-typedef struct
-{
-    Row rows[MAX_TRANSITIONS];
-    int taille;
-} TableTransition;
-
 AFN creer_afn();
 
 void definir_etats(AFN *afn, Etat *etats, int taille);
@@ -51,7 +39,7 @@ void ajouter_etat_initial(AFN *afn, Etat etat);
 
 void ajouter_transition(AFN *afn, Etat depart, char symbole, Etat arrivee);
 
-AFN determiniser(AFN afn);
+Ensemble recuperer_etats_suivants(AFN afn, Etat etat, char symbole);
 
 void afficher_afn(AFN afn);
 
