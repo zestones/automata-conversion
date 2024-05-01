@@ -42,7 +42,7 @@ static void trouver_etats_finaux(AFD *afd, AFN afn)
         {
             if (appartient(afd->table.rows[i].etat, afn.etats_finaux.elements[j]))
             {
-                ajouter_etat_final(&afd->afd, i);
+                ajouter_etat_final(&afd->afd, i + 1);
                 break;
             }
         }
@@ -59,10 +59,22 @@ static void trouver_transitions(AFD *afd, AFN afn)
             {
                 if (est_egal(afd->table.rows[i].ensembles[j], afd->table.rows[k].etat))
                 {
-                    ajouter_transition(&afd->afd, i, afn.alphabets.elements[j], k);
+                    ajouter_transition(&afd->afd, i + 1, afn.alphabets.elements[j], k + 1);
                     break;
                 }
             }
+        }
+    }
+}
+
+static void trouver_etat_initial(AFD *afd, AFN afn)
+{
+    for (int i = 0; i < afd->table.taille; i++)
+    {
+        if (est_egal(afd->table.rows[i].etat, afn.etats_initiaux))
+        {
+            ajouter_etat_initial(&afd->afd, i + 1);
+            break;
         }
     }
 }
@@ -80,18 +92,6 @@ static void traitement_etats_initiaux(AFD *afd, AFN afn)
             etats_suivants = union_ensemble(etats_suivants, etats);
         }
         afd->table.rows[afd->table.taille - 1].ensembles[i] = etats_suivants;
-    }
-}
-
-static void trouver_etats_initiaux(AFD *afd, AFN afn)
-{
-    for (int i = 0; i < afd->table.taille; i++)
-    {
-        if (est_egal(afd->table.rows[i].etat, afn.etats_initiaux))
-        {
-            ajouter_etat_initial(&afd->afd, i);
-            break;
-        }
     }
 }
 
@@ -139,9 +139,19 @@ AFD determiniser(AFN afn)
         }
     }
 
-    trouver_etats_initiaux(&afd, afn);
+    trouver_etat_initial(&afd, afn);
     trouver_etats_finaux(&afd, afn);
     trouver_transitions(&afd, afn);
 
     return afd;
+}
+
+void afficher_afd(AFD afd)
+{
+    fprintf(stdout, "\n\n==========================================================\n");
+    fprintf(stdout, "           Automate deterministe equivalent      \n");
+    fprintf(stdout, "==========================================================\n");
+
+    afficher_table_transition(afd.table, afd.afd.alphabets);
+    afficher_afn(afd.afd);
 }

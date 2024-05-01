@@ -28,4 +28,6 @@ AFD determiniser(AFN afn);
 
 void afficher_table_transition(TableTransition table_transition, Ensemble alphabets);
 
+void afficher_afd(AFD afd);
+
 #endif

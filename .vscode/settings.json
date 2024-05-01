@@ -3,6 +3,7 @@
         "*.rmd": "markdown",
         "ensemble.h": "c",
         "afn.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "test.h": "c"
     }
 }

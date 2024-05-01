@@ -77,22 +77,32 @@ Ensemble recuperer_etats_suivants(AFN afn, Etat etat, char symbole)
 
 int est_mot_accepte(AFN afn, char *mot)
 {
-    AFD afd = determiniser(afn);
-    Etat etat_courant = 0;
+    AFD automate = determiniser(afn);
+    Etat etat_courant = automate.afd.etats_initiaux.elements[0];
 
     for (int i = 0; mot[i] != '\0'; i++)
     {
-        for (int j = 0; j < afd.afd.alphabets.taille; j++)
+        char symbole = mot[i];
+        int trouve = 0;
+
+        // On cherche une transition entre l'état courant et le symbole
+        for (int j = 0; j < automate.afd.taille_transitions; j++)
         {
-            if (mot[i] == afd.afd.alphabets.elements[j])
+            if (automate.afd.transitions[j].depart == etat_courant && automate.afd.transitions[j].symbole == symbole)
             {
-                etat_courant = afd.table.rows[etat_courant].ensembles[j].elements[0];
+                etat_courant = automate.afd.transitions[j].arrivee;
+                trouve = 1;
                 break;
             }
         }
+
+        if (!trouve)
+        {
+            return 0;
+        }
     }
 
-    if (appartient(afd.afd.etats_finaux, etat_courant))
+    if (appartient(automate.afd.etats_finaux, etat_courant))
     {
         return 1;
     }
@@ -108,20 +118,35 @@ static void afficher_transition(AFN afn)
     printf("+--------+---------+---------+\n");
     printf("| Depart | Symbole | Arrivee |\n");
     printf("+--------+---------+---------+\n");
-    for (int i = 0; i < MAX_TRANSITIONS; i++)
+    for (int i = 0; i < afn.taille_transitions; i++)
     {
-        if (afn.transitions[i].depart == -1)
-        {
-            break;
-        }
-
         printf("|   %2d   |    %c    |   %2d    |\n", afn.transitions[i].depart, afn.transitions[i].symbole, afn.transitions[i].arrivee);
     }
     printf("+--------+---------+---------+\n");
 }
 
+static void afficher_alphabets(Ensemble alphabet)
+{
+    printf("{");
+
+    for (int i = 0; i < alphabet.taille; i++)
+    {
+        printf("%c", alphabet.elements[i]);
+
+        if (i < alphabet.taille - 1)
+        {
+            printf(", ");
+        }
+    }
+
+    printf("}");
+}
+
 void afficher_afn(AFN afn)
 {
+    printf("\nAlphabets      : ");
+    afficher_alphabets(afn.alphabets);
+
     printf("\nEtats initiaux : ");
     afficher_ensemble(afn.etats_initiaux);
 
