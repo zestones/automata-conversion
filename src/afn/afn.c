@@ -1,4 +1,5 @@
 #include "../../includes/afn/afn.h"
+#include "../../includes/afd/afd.h"
 
 AFN creer_afn()
 {
@@ -72,6 +73,31 @@ Ensemble recuperer_etats_suivants(AFN afn, Etat etat, char symbole)
     }
 
     return etats_suivants;
+}
+
+int est_mot_accepte(AFN afn, char *mot)
+{
+    AFD afd = determiniser(afn);
+    Etat etat_courant = 0;
+
+    for (int i = 0; mot[i] != '\0'; i++)
+    {
+        for (int j = 0; j < afd.afd.alphabets.taille; j++)
+        {
+            if (mot[i] == afd.afd.alphabets.elements[j])
+            {
+                etat_courant = afd.table.rows[etat_courant].ensembles[j].elements[0];
+                break;
+            }
+        }
+    }
+
+    if (appartient(afd.afd.etats_finaux, etat_courant))
+    {
+        return 1;
+    }
+
+    return 0;
 }
 
 static void afficher_transition(AFN afn)

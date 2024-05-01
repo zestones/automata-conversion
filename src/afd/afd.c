@@ -49,6 +49,7 @@ AFD determiniser(AFN afn)
 {
     AFD afd;
     afd.afd = creer_afn();
+    afd.afd.alphabets = afn.alphabets;
 
     traitement_etats_initiaux(afn, &afd.table);
     for (int i = 0; i < afd.table.taille; i++)

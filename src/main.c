@@ -27,6 +27,9 @@ int main()
     afficher_table_transition(afd.table, afn.alphabets);
     afficher_afn(afd.afd);
 
+    int est_accepte = est_mot_accepte(afd.afd, "aaa");
+    printf("Mot accepte: %c\n", (est_accepte) ? 'O' : 'N');
+
     // AFN afn = creer_afn();
 
     // Etat etats[] = {1, 2, 3};

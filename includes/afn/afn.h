@@ -41,6 +41,8 @@ void ajouter_transition(AFN *afn, Etat depart, char symbole, Etat arrivee);
 
 Ensemble recuperer_etats_suivants(AFN afn, Etat etat, char symbole);
 
+int est_mot_accepte(AFN afn, char *mot);
+
 void afficher_afn(AFN afn);
 
 #endif
