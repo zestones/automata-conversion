@@ -4,6 +4,7 @@
         "ensemble.h": "c",
         "afn.h": "c",
         "stdlib.h": "c",
-        "test.h": "c"
+        "test.h": "c",
+        "afd.h": "c"
     }
 }

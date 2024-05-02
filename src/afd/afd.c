@@ -38,7 +38,7 @@ static void trouver_etats_finaux(AFD *afd, AFN afn)
 {
     for (int i = 0; i < afd->table.taille; i++)
     {
-        for (int j = 0; j < afn.etats_finaux.taille; j++)
+        for (int j = 0; j < cardinalite(afn.etats_finaux); j++)
         {
             if (appartient(afd->table.rows[i].etat, afn.etats_finaux.elements[j]))
             {
@@ -53,7 +53,7 @@ static void trouver_transitions(AFD *afd, AFN afn)
 {
     for (int i = 0; i < afd->table.taille; i++)
     {
-        for (int j = 0; j < afn.alphabets.taille; j++)
+        for (int j = 0; j < cardinalite(afn.alphabets); j++)
         {
             for (int k = 0; k < afd->table.taille; k++)
             {
@@ -82,16 +82,16 @@ static void trouver_etat_initial(AFD *afd, AFN afn)
 static void traitement_etats_initiaux(AFD *afd, AFN afn)
 {
     afd->table.taille = 1;
-    afd->table.rows[afd->table.taille - 1].etat = afn.etats_initiaux;
-    for (int i = 0; i < afn.alphabets.taille; i++)
+    afd->table.rows[0].etat = afn.etats_initiaux;
+    for (int i = 0; i < cardinalite(afn.alphabets); i++)
     {
         Ensemble etats_suivants = creer_ensemble_vide();
-        for (int j = 0; j < afn.etats_initiaux.taille; j++)
+        for (int j = 0; j < cardinalite(afn.etats_initiaux); j++)
         {
             Ensemble etats = recuperer_etats_suivants(afn, afn.etats_initiaux.elements[j], afn.alphabets.elements[i]);
             etats_suivants = union_ensemble(etats_suivants, etats);
         }
-        afd->table.rows[afd->table.taille - 1].ensembles[i] = etats_suivants;
+        afd->table.rows[0].ensembles[i] = etats_suivants;
     }
 }
 
@@ -104,13 +104,15 @@ AFD determiniser(AFN afn)
     traitement_etats_initiaux(&afd, afn);
     for (int i = 0; i < afd.table.taille; i++)
     {
-        for (int j = 0; j < afn.alphabets.taille; j++)
+        for (int j = 0; j < cardinalite(afn.alphabets); j++)
         {
+            // On ignore les ensembles vides
             if (est_vide(afd.table.rows[i].ensembles[j]))
             {
                 continue;
             }
 
+            // On vérifie si l'ensemble existe déjà dans la table
             int existe = 0;
             for (int k = 0; k < afd.table.taille; k++)
             {
@@ -124,10 +126,10 @@ AFD determiniser(AFN afn)
             if (!existe)
             {
                 afd.table.rows[afd.table.taille].etat = afd.table.rows[i].ensembles[j];
-                for (int k = 0; k < afn.alphabets.taille; k++)
+                for (int k = 0; k < cardinalite(afn.alphabets); k++)
                 {
                     Ensemble etats_suivants = creer_ensemble_vide();
-                    for (int l = 0; l < afd.table.rows[i].ensembles[j].taille; l++)
+                    for (int l = 0; l < cardinalite(afd.table.rows[i].ensembles[j]); l++)
                     {
                         Ensemble etats = recuperer_etats_suivants(afn, afd.table.rows[i].ensembles[j].elements[l], afn.alphabets.elements[k]);
                         etats_suivants = union_ensemble(etats_suivants, etats);
