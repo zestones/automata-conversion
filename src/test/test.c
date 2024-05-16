@@ -74,7 +74,7 @@ AFN creer_automate_complex_abc()
     definir_etats(&automate, etats, 3);
 
     char *alphabets = "abc";
-    definir_alphabets(&automate, alphabets, 2);
+    definir_alphabets(&automate, alphabets, 3);
 
     ajouter_etat_initial(&automate, 1);
     ajouter_etat_initial(&automate, 2);

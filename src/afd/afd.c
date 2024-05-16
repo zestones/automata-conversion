@@ -49,17 +49,17 @@ static void trouver_etats_finaux(AFD *afd, AFN afn)
     }
 }
 
-static void trouver_transitions(AFD *afd, AFN afn)
+static void trouver_transitions(AFD *automate)
 {
-    for (int i = 0; i < afd->table.taille; i++)
+    for (int i = 0; i < automate->table.taille; i++)
     {
-        for (int j = 0; j < cardinalite(afn.alphabets); j++)
+        for (int j = 0; j < cardinalite(automate->afd.alphabets); j++)
         {
-            for (int k = 0; k < afd->table.taille; k++)
+            for (int k = 0; k < automate->table.taille; k++)
             {
-                if (est_egal(afd->table.rows[i].ensembles[j], afd->table.rows[k].etat))
+                if (est_egal(automate->table.rows[i].ensembles[j], automate->table.rows[k].etat))
                 {
-                    ajouter_transition(&afd->afd, i + 1, afn.alphabets.elements[j], k + 1);
+                    ajouter_transition(&automate->afd, i + 1, automate->afd.alphabets.elements[j], k + 1);
                     break;
                 }
             }
@@ -143,7 +143,7 @@ AFD determiniser(AFN afn)
 
     trouver_etat_initial(&afd, afn);
     trouver_etats_finaux(&afd, afn);
-    trouver_transitions(&afd, afn);
+    trouver_transitions(&afd);
 
     return afd;
 }
